@@ -166,3 +166,14 @@ namespace hash {
                       : Hash64A(str, start, IV_TYPE3);
     }
 } // namespace hash
+
+#define __HASH_64__(x) HashX64(x)
+#define __HASH_32__(x) HashX32(x)
+#define __HASH_IWDVar__(x) HashIWDVar(x)
+#define __HASH_IWAsset__(x) HashIWAsset(x)
+#define __HASH_JupScr__(x) HashJupScr(x)
+#define __HASH_T10OmnVar__(x) HashT10OmnVar(x)
+#define __HASH_T10Scr__(x) HashT10Scr(x)
+#define __HASH_T10ScrSP__(x) HashT10ScrSP(x)
+#define __HASH_T89Scr__(x) HashT89Scr(x)
+#define __HASH_T7__(x) HashT7(x)

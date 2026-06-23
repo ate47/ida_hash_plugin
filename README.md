@@ -4,7 +4,10 @@
 
 ## How to use
 
-Download the latest release dll for your IDA version in [release](https://github.com/ate47/ida_hash_plugin/releases).
+Download the latest release dll for your IDA version:
+
+- [IDA 7 x64](https://github.com/ate47/ida_hash_plugin/releases/latest/download/ida_hash_plugin64.dll)
+- [IDA 9](https://github.com/ate47/ida_hash_plugin/releases/latest/download/ida_hash_plugin.dll)
 
 Copy the release DLL in your `ida/plugins` directory.
 

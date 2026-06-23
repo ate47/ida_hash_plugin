@@ -4,38 +4,44 @@ file(GLOB_RECURSE IHP_SOURCES
     "${CMAKE_SOURCE_DIR}/src/plugin/*.h"
     "${CMAKE_SOURCE_DIR}/src/plugin/*.hpp"
 )
-add_library(IDAHashPlugin SHARED)
-set_target_properties(IDAHashPlugin PROPERTIES
-    OUTPUT_NAME "ida_hash_plugin64"
-    FOLDER "Plugin"
-)
-target_sources(IDAHashPlugin PRIVATE ${IHP_SOURCES})
-source_group(
-    TREE "${CMAKE_SOURCE_DIR}/src/plugin"
-    PREFIX plugin
-    FILES ${IHP_SOURCES}
-)
 
-append_common_defs(IDAHashPlugin)
+macro(make_ihp_target target sdk hexrays output_file)
+    add_library(${target} SHARED)
+    set_target_properties(${target} PROPERTIES
+        OUTPUT_NAME "${output_file}"
+        FOLDER "Plugin"
+    )
+    target_sources(${target} PRIVATE ${IHP_SOURCES})
+    source_group(
+        TREE "${CMAKE_SOURCE_DIR}/src/plugin"
+        PREFIX plugin
+        FILES ${IHP_SOURCES}
+    )
 
-target_include_directories(IDAHashPlugin PRIVATE 
-    "${CMAKE_SOURCE_DIR}/src/plugin"
-    "${CMAKE_SOURCE_DIR}/deps/lz4/lib/"
-    "${IDASDK_DIR}/include"
-    "${HEXRAYS_SDK_DIR}/include"
-)
+    append_common_defs(${target})
 
-target_link_libraries(IDAHashPlugin PRIVATE
-    lz4
-    "${IDASDK_DIR}/lib/x64_win_vc_64/ida.lib"
-)
+    target_include_directories(${target} PRIVATE 
+        "${CMAKE_SOURCE_DIR}/src/plugin"
+        "${CMAKE_SOURCE_DIR}/deps/lz4/lib/"
+        "${sdk}/include"
+        "${hexrays}/include"
+    )
 
-add_dependencies(IDAHashPlugin
-    lz4
-)
+    target_link_libraries(${target} PRIVATE
+        lz4
+        "${sdk}/lib/x64_win_vc_64/ida.lib"
+    )
 
-target_compile_definitions(IDAHashPlugin PRIVATE 
-    __EA64__
-    __NT__
-    USE_STANDARD_FILE_FUNCTIONS
-)
+    add_dependencies(${target}
+        lz4
+    )
+
+    target_compile_definitions(${target} PRIVATE 
+        __EA64__
+        __NT__
+        USE_STANDARD_FILE_FUNCTIONS
+    )
+endmacro()
+
+make_ihp_target(IDAHashPlugin ${IDASDK_DIR} ${HEXRAYS_SDK_DIR} "ida_hash_plugin64")
+make_ihp_target(IDAHashPlugin9 ${IDASDK9_DIR} ${IDASDK9_DIR} "ida_hash_plugin")
