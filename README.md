@@ -13,7 +13,7 @@ Copy the release DLL in your `ida/plugins` directory.
 
 Now create in the `ida/cfg` directory a file named `hash_strings.txt`. This file contains all the strings used by the plugin (one string per line).
 
-For now these hash functions are registered, see [hash_mini.hpp](src\plugin\hash_mini.hpp) for the implementation.
+For now these hash functions are registered, see [hash_mini.hpp](src/plugin/hash_mini.hpp) for their implementations and [ate47/HashIndex](https://github.com/ate47/HashIndex/blob/main/docs/hashes.md) for their usages.
 
 - `__HASH_64__`
 - `__HASH_32__`
@@ -25,11 +25,3 @@ For now these hash functions are registered, see [hash_mini.hpp](src\plugin\hash
 - `__HASH_T10ScrSP__`
 - `__HASH_T89Scr__`
 - `__HASH_T7__`
-
-
-## Commands
-
-```pwsh
-# Create project
-cmake -S . -B build -G "Visual Studio 18 2026" -A x64
-```
