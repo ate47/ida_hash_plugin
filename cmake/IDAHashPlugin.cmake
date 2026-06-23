@@ -37,4 +37,5 @@ add_dependencies(IDAHashPlugin
 target_compile_definitions(IDAHashPlugin PRIVATE 
     __EA64__
     __NT__
+    USE_STANDARD_FILE_FUNCTIONS
 )

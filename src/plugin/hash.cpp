@@ -1,5 +1,9 @@
 #include <includes.hpp>
 #include <hash_mini.hpp>
+#include <hash.hpp>
+#include <diskio.hpp>
+#include <iostream>
+#include <fstream>
 #include <unordered_map>
 
 namespace hash {
@@ -9,6 +13,7 @@ namespace hash {
             uint64_t (*hash)(const char* str);
         } Algorithms[]{
             { "__HASH_64__", [](const char* str) -> uint64_t { return hash::Hash64(str); } },
+            { "__HASH_32__", [](const char* str) -> uint64_t { return hash::HashX32(str); } },
             { "__HASH_IWDVar__", [](const char* str) -> uint64_t { return hash::HashIWDVar(str); } },
             { "__HASH_IWAsset__", [](const char* str) -> uint64_t { return hash::HashIWAsset(str); } },
             { "__HASH_JupScr__", [](const char* str) -> uint64_t { return hash::HashJupScr(str); } },
@@ -55,10 +60,29 @@ namespace hash {
 
         hashes.clear();
 
-        
+        char cfgpath[QMAXPATH];
+        const char* rfile = getsysfile(cfgpath, sizeof(cfgpath), HASH_FILE, CFG_SUBDIR);
+        if (rfile == nullptr) {
+            msg("Can't find hash list file: %s\n", HASH_FILE);
+            return;
+        }
 
-        AddString("test");
+        std::ifstream is{ rfile };
+        if (!is) {
+            msg("Can't read hash list file: %s\n", rfile);
+            return;
+        }
 
-        // TODO: read strings
+        std::string line;
+        size_t idx{};
+        size_t added{};
+        while (is && std::getline(is, line)) {
+            idx++;
+            if (line.empty() || line[0] == '#') {
+                continue;
+            }
+
+            AddString(strdup(line.data()));
+        }
     }
 } // namespace hash
